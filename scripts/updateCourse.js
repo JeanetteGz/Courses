@@ -6,37 +6,55 @@
 // Redirect to getOneCourse page "/getOneCourse.html?id=1"
 
 window.onload = () => {
+    // Get the current course ID from query param
     let urlParams = new URLSearchParams(location.search);
     let currentCourseId = urlParams.get('id');
     let updateForm = document.getElementById("update-form");
 
-    updateForm.onsubmit = (e) => {
-        // Prevent a page refresh
-        e.preventDefault();
 
         // Get all of the field values
-        let dept = document.getElementById("dept").value;
-        let courseNum = document.getElementById("courseNum").value;
-        let instructor = document.getElementById("instructor").value;
-        let startDate = document.getElementById("startDate").value;
-        let numDays = document.getElementById("numDays").value;
+        let deptInputEl = document.getElementById("dept");
+        let courseNumInputEl = document.getElementById("courseNum");
+        let courseNameInputEl = document.getElementById("courseName");
+        let instructorInputEl = document.getElementById("instructor")
+        let startDateInputEl = document.getElementById("startDate");
+        let numDaysInputEl = document.getElementById("numDays");
 
-        // Prepare the data for the fetch request
-        let formData = {
-            dept: dept,
-            courseNum: courseNum,
-            instructor: instructor,
-            startDate: startDate,
-            numDays: numDays
-        };
+        // Fetch to get current course details
+        fetch(`http://localhost:8081/api/courses/${currentCourseId}`)
+        .then((res) => res.json())
+        .then((courseDetails) => {
+            // Set the form values to the retrieved current course
+            deptInputEl.value = courseDetails.dept;
+            courseNumInputEl.value = courseDetails.courseNum;
+            courseNameInputEl.value = courseDetails.courseName;
+            instructorInputEl.value = courseDetails.instructor;
+            startDateInputEl.value = courseDetails.startDate;
+            numDaysInputEl.value = courseDetails.numDays;
+        });
 
-        // Make a PUT request to update the course
+        updateForm.onsubmit = (e) => {
+            // Prevent a page refresh
+            e.preventDefault();
+            // Creating the data to update from the current value of our form fields
+            let currentFormData = {
+                "dept": deptInputEl.value,
+                "courseNum": courseNumInputEl.value,
+                "courseName": courseNameInputEl.value,
+                "instructor": instructorInputEl.value,
+                "startDate": startDateInputEl.value,
+                "numDays": numDaysInputEl.value,
+            };
+
+
+
+        // Send thew data to the API using Fetch
         fetch(`http://localhost:8081/api/courses/${currentCourseId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(currentFormData),
         }).then((res) => {
             console.log("Course has been updated successfully");
             // Redirect to getOneCourse page
