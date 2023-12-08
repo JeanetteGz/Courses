@@ -20,6 +20,34 @@
     </nav>
 
     <h1>Update Course</h1>
+
+    <form id="update-form">
+        <div>
+            <label for="dept">Department:</label>
+            <input id="dept" type="text" required />
+        </div>
+        <div>
+            <label for="courseNum">Course Number:</label>
+            <input id="courseNum" type="number" required />
+        </div>
+        <div>
+            <label for="courseName">Course Name:</label>
+            <input id="courseName" type="text" required  minlength="3" maxlength="20"/>
+        </div>
+        <div>
+            <label for="instructor">Instructor:</label>
+            <input id="instructor" type="text" required minlength="2" />
+        </div>
+        <div>
+            <label for="startDate">Start Date:</label>
+            <input id="startDate" type="date" required />
+        </div>
+        <div>
+            <label for="numDays">Number Of Days:</label>
+            <input id="numDays" type="number" />
+        </div>
+        <input type="submit" value="Update">
+    </form>
     
     <script src="/scripts/updateCourse.js"></script>
 </body>
